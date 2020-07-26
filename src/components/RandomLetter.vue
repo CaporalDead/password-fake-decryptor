@@ -17,6 +17,8 @@ export default {
 
         this.handler = window.setInterval(() => {
             this.letter = this.randomLetter();
+
+            this.$emit('letter-updated');
         }, 50);
 
         if (!this.active) {
