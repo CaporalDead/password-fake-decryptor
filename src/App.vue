@@ -7,11 +7,11 @@
         <div>
             Password :
 
-            <ProgressivePasswordReveal password="coucou!" @revealed="toggleActive"/>
+            <ProgressivePasswordReveal password="yo" @revealed="toggleActive"/>
         </div>
 
         <div>
-            [{{hours}}:{{minutes}}:{{seconds}}] :{{numberOfKeys}} keys tested
+            [{{elapsedTime}}] :{{numberOfKeys}} keys tested
         </div>
 
         <div>
@@ -43,9 +43,7 @@ export default {
             isActive: true,
             startedAt: null,
             handler: null,
-            seconds: '00',
-            minutes: '00',
-            hours: '00',
+            elapsedTime: '00:00:00',
             numberOfKeys: 0,
         };
     },
@@ -56,11 +54,12 @@ export default {
         this.handler = window.setInterval(() => {
             const now = (new Date()).getTime();
             let diff = (now - this.startedAt) / 1000;
-            this.seconds = Math.floor(diff % 60) < 10 ? `0${Math.floor(diff % 60)}` : Math.floor(diff % 60);
+            const seconds = Math.floor(diff % 60) < 10 ? `0${Math.floor(diff % 60)}` : Math.floor(diff % 60);
             diff = diff / 60;
-            this.minutes = Math.floor(diff % 60) < 10 ? `0${Math.floor(diff % 60)}` : Math.floor(diff % 60);
+            const minutes = Math.floor(diff % 60) < 10 ? `0${Math.floor(diff % 60)}` : Math.floor(diff % 60);
             diff = diff / 60;
-            this.hours = Math.floor(diff % 24) < 10 ? `0${Math.floor(diff % 24)}` : Math.floor(diff % 24);
+            const hours = Math.floor(diff % 24) < 10 ? `0${Math.floor(diff % 24)}` : Math.floor(diff % 24);
+            this.elapsedTime = `${hours}:${minutes}:${seconds}`;
         }, 1000);
     },
     destroyed() {
@@ -70,6 +69,7 @@ export default {
         toggleActive() {
             this.isActive = false;
 
+            window.clearInterval(this.handler);
             this.$forceUpdate();
         },
         increment() {

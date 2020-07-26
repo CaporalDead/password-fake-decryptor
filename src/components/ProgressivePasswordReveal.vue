@@ -44,14 +44,12 @@ export default {
 
                 if (false !== result) {
                     this.process();
-                } else {
-
-                    this.$emit('revealed');
                 }
+
             }, this.delay());
         },
         reveal() {
-            if (!Object.values(this.letters).find(r => !r.revealed)) {
+            if (!this.hasUnrevealedLeft()) {
                 return false;
             }
 
@@ -63,7 +61,14 @@ export default {
 
             this.letters[itemToReveal].revealed = true;
 
+            if (!this.hasUnrevealedLeft()) {
+                this.$emit('revealed');
+            }
+
             return itemToReveal;
+        },
+        hasUnrevealedLeft() {
+            return Object.values(this.letters).filter(r => !r.revealed).length > 0;
         },
     },
 }
