@@ -1,18 +1,51 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>Password Decryptor</div>
+
+    <div>Calculating Hashes</div>
+
+    <div>
+      Password :
+
+      <ProgressivePasswordReveal password="coucou!" @revealed="toggleActive"/>
+    </div>
+
+    <div>
+      <div style="width: 300px;">Master Key : </div>
+      <div>
+        <RandomLetter :active="isActive"/>
+        <RandomLetter :active="isActive"/>
+      </div>
+    </div>
+
+    <div>
+      <div style="width: 300px;">Transient Key : </div>
+      <div>
+        <RandomLetter :active="isActive"/>
+        <RandomLetter :active="isActive"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import RandomLetter from './components/RandomLetter';
+import ProgressivePasswordReveal from './components/ProgressivePasswordReveal';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: { RandomLetter, ProgressivePasswordReveal},
+  data() {
+    return {
+      isActive: true,
+    };
+  },
+  methods: {
+    toggleActive() {
+      this.isActive = false;
+
+      this.$forceUpdate();
+    },
+  },
 }
 </script>
 
@@ -22,7 +55,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   margin-top: 60px;
+  color: white;
+  font-family: "Fira Code";
 }
 </style>
