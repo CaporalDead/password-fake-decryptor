@@ -1,12 +1,12 @@
 <template>
-    <div id="app" class="p-10">
+    <div id="app" class="p-10 font-mono">
         <div class="text-center text-4xl font-sans font-bold">Password Decryptor</div>
 
         <div class="font-sans mb-10 text-center tracking-wider">Calculating Hashes</div>
         <div style="max-width: 600px" class="mx-auto space-y-4">
 
             <div>
-                [{{elapsedTime}}] : {{numberOfKeys}} keys tested
+                [{{elapsedTime}}] : {{format(numberOfKeys)}} keys tested
             </div>
 
             <div>
@@ -14,7 +14,7 @@
                     Current password :
                 </div>
                 <div class="inline-block">
-                    <ProgressivePasswordReveal password="yo" @revealed="toggleActive"/>
+                    <ProgressivePasswordReveal password="P@$$w0rD" @revealed="toggleActive"/>
                 </div>
             </div>
 
@@ -27,8 +27,8 @@
                     <div v-for="_index in 30" :key="`master-key-${_index}`"
                          class="inline-block"
                          :class="{'mr-2': 0 === _index%2}">
-                        <RandomLetter @letter-updated="increment" :active="isActive"/>
-                        <RandomLetter @letter-updated="increment" :active="isActive"/>
+                        <RandomLetter @letter-updated="increment" :in-motion="inMotion"/>
+                        <RandomLetter @letter-updated="increment" :in-motion="inMotion"/>
                     </div>
                 </div>
             </div>
@@ -42,8 +42,8 @@
                     <div v-for="_index in 30" :key="`transient-key-${_index}`"
                          class="inline-block"
                          :class="{'mr-2': 0 === _index%2}">
-                        <RandomLetter @letter-updated="increment" :active="isActive"/>
-                        <RandomLetter @letter-updated="increment" :active="isActive"/>
+                        <RandomLetter @letter-updated="increment" :in-motion="inMotion"/>
+                        <RandomLetter @letter-updated="increment" :in-motion="inMotion"/>
                     </div>
                 </div>
             </div>
@@ -59,11 +59,11 @@ export default {
     components: { RandomLetter, ProgressivePasswordReveal },
     data() {
         return {
-            isActive: true,
+            inMotion: true,
             startedAt: null,
             handler: null,
             elapsedTime: '00:00:00',
-            numberOfKeys: 0,
+            numberOfKeys: 1,
         };
     },
     created() {
@@ -86,26 +86,17 @@ export default {
     },
     methods: {
         toggleActive() {
-            this.isActive = false;
+            this.inMotion = false;
 
             window.clearInterval(this.handler);
             this.$forceUpdate();
         },
         increment() {
-            this.numberOfKeys++;
+            this.numberOfKeys *= 1.0012;
+        },
+        format(number) {
+            return new Intl.NumberFormat('fr-FR', { }).format(parseInt(number, 10));
         },
     },
 }
 </script>
-
-<style lang="scss">
-    /*#app {*/
-    /*    font-family: Avenir, Helvetica, Arial, sans-serif;*/
-    /*    -webkit-font-smoothing: antialiased;*/
-    /*    -moz-osx-font-smoothing: grayscale;*/
-    /*    text-align: center;*/
-    /*    margin-top: 60px;*/
-    /*    color: white;*/
-    /*    font-family: "Fira Code";*/
-    /*}*/
-</style>

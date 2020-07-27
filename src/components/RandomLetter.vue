@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    props: { active: { type: Boolean, default: true } },
+    props: { inMotion: { type: Boolean, default: true } },
     data() {
         return {
             dictionary: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'],
@@ -13,20 +13,27 @@ export default {
         };
     },
     mounted() {
-        this.randomLetter();
+        if (!this.inMotion) {
+            return;
+        }
 
         this.handler = window.setInterval(() => {
             this.letter = this.randomLetter();
 
             this.$emit('letter-updated');
         }, 50);
-
-        if (!this.active) {
-            window.clearInterval(this.handler);
-        }
+    },
+    destroyed() {
+        window.clearInterval(this.handler);
     },
     methods: {
         randomLetter() {
+            if (!this.inMotion) {
+                window.clearInterval(this.handler);
+
+                return this.letter;
+            }
+
             return this.dictionary[Math.floor(Math.random() * this.dictionary.length)];
         },
     },

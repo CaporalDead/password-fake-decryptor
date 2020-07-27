@@ -1,6 +1,8 @@
 <template>
     <div>
-        <div v-for="entry in Object.values(letters)" :key="`${entry.key}`" style="display: inline-block;">
+        <div v-for="entry in Object.values(letters)"
+             :key="`unrevealed-${entry.key}`"
+             style="display: inline-block;">
             <RandomLetter style="width: 30px; color: red" v-if="!entry.revealed"/>
             <div style="width: 30px; color: greenyellow" v-else v-text="entry.letter"></div>
         </div>
