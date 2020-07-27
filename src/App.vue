@@ -1,32 +1,51 @@
 <template>
-    <div id="app">
-        <div>Password Decryptor</div>
+    <div id="app" class="p-10">
+        <div class="text-center text-4xl font-sans font-bold">Password Decryptor</div>
 
-        <div>Calculating Hashes</div>
+        <div class="font-sans mb-10 text-center tracking-wider">Calculating Hashes</div>
+        <div style="max-width: 600px" class="mx-auto space-y-4">
 
-        <div>
-            Password :
-
-            <ProgressivePasswordReveal password="yo" @revealed="toggleActive"/>
-        </div>
-
-        <div>
-            [{{elapsedTime}}] :{{numberOfKeys}} keys tested
-        </div>
-
-        <div>
-            <div style="width: 300px;">Master Key :</div>
             <div>
-                <RandomLetter @letter-updated="increment" :active="isActive"/>
-                <RandomLetter @letter-updated="increment" :active="isActive"/>
+                [{{elapsedTime}}] : {{numberOfKeys}} keys tested
             </div>
-        </div>
 
-        <div>
-            <div style="width: 300px;">Transient Key :</div>
             <div>
-                <RandomLetter @letter-updated="increment" :active="isActive"/>
-                <RandomLetter @letter-updated="increment" :active="isActive"/>
+                <div class="inline-block mr-4">
+                    Current password :
+                </div>
+                <div class="inline-block">
+                    <ProgressivePasswordReveal password="yo" @revealed="toggleActive"/>
+                </div>
+            </div>
+
+            <div>
+                <div class="inline-flex justify-between mr-4 align-top" style="width: 140px;">
+                    <div>Master Key</div>
+                    <div>:</div>
+                </div>
+                <div class="inline-block align-top tracking-tighter">
+                    <div v-for="_index in 30" :key="`master-key-${_index}`"
+                         class="inline-block"
+                         :class="{'mr-2': 0 === _index%2}">
+                        <RandomLetter @letter-updated="increment" :active="isActive"/>
+                        <RandomLetter @letter-updated="increment" :active="isActive"/>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="inline-flex justify-between mr-4 align-top" style="width: 140px;">
+                    <div>Transient Key</div>
+                    <div>:</div>
+                </div>
+                <div class="inline-block align-top tracking-tighter">
+                    <div v-for="_index in 30" :key="`transient-key-${_index}`"
+                         class="inline-block"
+                         :class="{'mr-2': 0 === _index%2}">
+                        <RandomLetter @letter-updated="increment" :active="isActive"/>
+                        <RandomLetter @letter-updated="increment" :active="isActive"/>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -80,13 +99,13 @@ export default {
 </script>
 
 <style lang="scss">
-    #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        margin-top: 60px;
-        color: white;
-        font-family: "Fira Code";
-    }
+    /*#app {*/
+    /*    font-family: Avenir, Helvetica, Arial, sans-serif;*/
+    /*    -webkit-font-smoothing: antialiased;*/
+    /*    -moz-osx-font-smoothing: grayscale;*/
+    /*    text-align: center;*/
+    /*    margin-top: 60px;*/
+    /*    color: white;*/
+    /*    font-family: "Fira Code";*/
+    /*}*/
 </style>
